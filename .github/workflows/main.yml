@@ -183,7 +183,14 @@ jobs:
           echo "::group::outboards"
           if [ -n "$shield" ]
           then
-            outboards="shields/$keyboard_base boards/${{ matrix.board }}"
+            outboards=""
+            for s in ${{ matrix.shield }}
+            do
+              # Strip split and version suffixes to find the base shield name
+              s_base=`echo "$s" | sed -e 's/_\(left\|right\|dongle\)//' -e 's/@.*//'`
+              outboards="$outboards shields/$s_base"
+            done
+            outboards="$outboards boards/${{ matrix.board }}"
           else
             outboards="boards/$keyboard_base"
           fi
