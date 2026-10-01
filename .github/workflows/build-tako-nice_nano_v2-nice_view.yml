@@ -12,3 +12,4 @@ jobs:
       shield: '["nice_view_adapter nice_view tako_left","nice_view_adapter nice_view tako_right"]'
       kconfig: '["CONFIG_ZMK_BLE=y\nCONFIG_ZMK_DISPLAY=y\nCONFIG_ZMK_DISPLAY_WORK_QUEUE_DEDICATED=y\nCONFIG_ZMK_EXT_POWER=n"]'
       modules: '["Lone-Soul/tako-config/main:config/tako_drivers"]'
+      branches: '["zmkfirmware/zmk/v0.3.0"]'
