@@ -277,6 +277,7 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::modules"
+          module_dirs=""
           for module in $modules
           do
             # Extract path after ':' if provided, otherwise leave empty
@@ -304,14 +305,15 @@ jobs:
               module_dir="${clone_dir}"
             fi
 
-            # Build the module_dirs string
+            # Append with semicolon separator for Zephyr CMake parser
             if [ -z "$module_dirs" ]
             then
-              module_dirs="$module_dir;"
+              module_dirs="$module_dir"
             else
-              module_dirs="$module_dirs;$module_dir;"
+              module_dirs="$module_dirs;$module_dir"
             fi
           done
+
           if [ -n "$module_dirs" ]
           then
             modules_arg="-DZMK_EXTRA_MODULES=\"$module_dirs\""
