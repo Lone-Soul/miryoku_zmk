@@ -279,19 +279,37 @@ jobs:
           echo "::group::modules"
           for module in $modules
           do
-            user=`echo "$module" | cut -f 1 -d '/'`
-            repo=`echo "$module" | cut -f 2 -d '/'`
-            branch=`echo "$module" | cut -f 3- -d '/'`
-            module_dir="${GITHUB_WORKSPACE}/modules/$user-$repo-"`echo "$branch" | tr '/' '_'`
-            if [ ! -d "$module_dir" ]
+            # Extract path after ':' if provided, otherwise leave empty
+            path=$(echo "$module" | cut -s -f 2 -d ':')
+            repo_ref=$(echo "$module" | cut -f 1 -d ':')
+
+            # Parse user, repo, and branch from repo_ref
+            user=$(echo "$repo_ref" | cut -f 1 -d '/')
+            repo=$(echo "$repo_ref" | cut -f 2 -d '/')
+            branch=$(echo "$repo_ref" | cut -f 3- -d '/')
+
+            # Root clone target directory
+            clone_dir="${GITHUB_WORKSPACE}/modules/$user-$repo-"$(echo "$branch" | tr '/' '_')
+
+            if [ ! -d "$clone_dir" ]
             then
-              git clone -b "$branch" --depth 1 "https://github.com/$user/$repo.git" "$module_dir"
-              if [ -z "$module_dirs" ]
-              then
-                module_dirs="$module_dir;"
-              else
-                module_dirs="$module_dirs;$module_dir;"
-              fi
+              git clone -b "$branch" --depth 1 "https://github.com/$user/$repo.git" "$clone_dir"
+            fi
+
+            # Resolve final module directory (append subpath if specified)
+            if [ -n "$path" ]
+            then
+              module_dir="${clone_dir}/${path}"
+            else
+              module_dir="${clone_dir}"
+            fi
+
+            # Build the module_dirs string
+            if [ -z "$module_dirs" ]
+            then
+              module_dirs="$module_dir;"
+            else
+              module_dirs="$module_dirs;$module_dir;"
             fi
           done
           if [ -n "$module_dirs" ]

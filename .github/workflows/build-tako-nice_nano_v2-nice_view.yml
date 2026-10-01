@@ -1,0 +1,14 @@
+# Copyright 2022 Manna Harbour
+# https://github.com/manna-harbour/miryoku
+
+name: 'Build tako nice_nano_v2 nice_view'
+on: workflow_dispatch
+jobs:
+  build:
+    uses: ./.github/workflows/main.yml
+    secrets: inherit
+    with:
+      board: '["nice_nano@2.0.0//zmk"]'
+      shield: '["tako_left nice_view_adapter nice_view","tako_right nice_view_adapter nice_view"]'
+      kconfig: '["CONFIG_ZMK_BLE=y\nCONFIG_ZMK_DISPLAY=y\nCONFIG_ZMK_DISPLAY_WORK_QUEUE_DEDICATED=y\nCONFIG_ZMK_EXT_POWER=n"]'
+      modules: '["Lone-Soul/tako-config/main:config/tako_drivers"]'
