@@ -3,5 +3,5 @@
 
 outboard_repository=mctechnology17/zmk-nice-oled
 outboard_ref=main
-outboard_from=config/boards/shields/nice_oled
+outboard_from=boards/shields/nice_oled
 outboard_to=boards/shields/nice_oled
