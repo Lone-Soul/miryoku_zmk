@@ -1,0 +1,7 @@
+# Copyright 2023 Manna Harbour
+# https://github.com/manna-harbour/miryoku
+
+outboard_repository=mctechnology17/zmk-nice-oled
+outboard_ref=main
+outboard_from=config/boards/shields/nice_oled
+outboard_to=boards/shields/nice_oled
